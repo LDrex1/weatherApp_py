@@ -117,6 +117,7 @@ class WeatherApi:
             return False
         
     # App flow configuration
+    @staticmethod
     def main():
         # Initialize WeatherApi instance
         weatherapp = WeatherApi()
@@ -148,5 +149,7 @@ class WeatherApi:
                     print(f'Weather data for {city} saved')
             else:
                 print(f'Weather data not available for {city}')
-    if __name__ == "__main__":
-        main()
+
+if __name__ == "__main__":
+   WeatherApi.main()
+   
