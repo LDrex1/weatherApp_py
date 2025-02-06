@@ -49,6 +49,7 @@ class WeatherApi:
                 
             else:
                 print(f'Failed to check bucket: {e}')
+            
                 
         # Create a new bucket is none is found        
         if bucketexists == False:
@@ -66,7 +67,7 @@ class WeatherApi:
                 return True
             except Exception as e:  
                 print(f'Failed to create S3 bucket, try again. {e}')
-                return 
+                return False
 
     # Retry connection attempt 3 times if there is faliure
     @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
@@ -125,7 +126,11 @@ class WeatherApi:
         # Initialize WeatherApi instance
         weatherapp = WeatherApi()
         # Call create_bucket method
-        weatherapp.create_bucket()
+        is_bucket_created = weatherapp.create_bucket()
+        if not is_bucket_created:
+            print ('Bucket could not be created, closing application')
+            return 
+        
         # Get  cities list from arguments
         args = parse_args()
         cities = args.cities
