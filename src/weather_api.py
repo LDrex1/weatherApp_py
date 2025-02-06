@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import argparse
 from tenacity import retry, stop_after_attempt, wait_fixed
 
+load_dotenv()
+
 # Function to parse arguments with cities added as default 
 def parse_args():
     parser = argparse.ArgumentParser(description="Fetch and upload weather data to S3.")
