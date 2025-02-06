@@ -25,7 +25,7 @@ class WeatherApi:
         self.bucket_name =  os.getenv('AWS_S3_BUCKET_NAME','weatherapp4587')
         self.region = os.getenv('AWS_REGION','eu-west-1')
         self.s3_client = boto3.client('s3', region_name=self.region)
-        self.cities = os.getenv('CITIES').split(',')
+        self.cities = os.getenv('CITIES', 'London, Moscow').split(',')
         self.session = requests.Session()
 
     # Function to check for/create Bucket
@@ -80,6 +80,7 @@ class WeatherApi:
             data = response.json()
             return data
         except requests.exceptions.RequestException as e:
+            print(f'Failed to fetch weather data for {city}:  {e}')
             return None
 
     # upload process to S3 
@@ -91,7 +92,7 @@ class WeatherApi:
         
         # If there is availiable data on the city
         timestamp = datetime.now().strftime("%d%m%Y-%H%M%S")
-        filename = f'weatherdata/{city}/{timestamp}'
+        filename = f'weatherdata/{city}/{timestamp}.json'
 
         try: 
             # Add timestamp to weather data dictionary
